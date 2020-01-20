@@ -68,7 +68,7 @@ foreach ($esx in $esxlist){
     if($ESXiVersion -eq 670){
         Invoke-Expression -command "$plink -ssh $root@$esx -pw $Passwd vim-cmd hostsvc/advopt/update UserVars.ESXiVPsDisabledProtocols string $TLSDisable"
     }
-    #Get-VMHostService | where {$psitem.key -eq "tsm-ssh"} | Stop-VMHostService -Confirm:$false
+    Get-VMHostService | where {$psitem.key -eq "tsm-ssh"} | Stop-VMHostService -Confirm:$false
     Disconnect-VIServer $esx -Confirm:$false
 }
 

@@ -36,8 +36,7 @@
 $root = "root"
 $Passwd = "VMware123!"
 $esxlist = "esxi55a.lab.local","esxi60a.lab.local","esxi65a.lab.local"
-$TLSDisable = "'tlsv1.1'"
-#$TLSDisable = "'sslv3,tlsv1,tlsv1.1'"
+$TLSDisable = "'sslv3,tlsv1,tlsv1.1'"
 
 #Warning! no changes required beyond this point
 

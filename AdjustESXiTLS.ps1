@@ -36,13 +36,15 @@
 $root = "root"
 $Passwd = "VMware123!"
 $esxlist = "esxi55a.lab.local","esxi60a.lab.local","esxi65a.lab.local"
-$TLSDisable = "'sslv3,tlsv1,tlsv1.1'"
+$TLSDisable = "'tlsv1.1'"
+#$TLSDisable = "'sslv3,tlsv1,tlsv1.1'"
 
 #Warning! no changes required beyond this point
 
 $plink = "echo y | .\plink.exe"
 
 foreach ($esx in $esxlist){
+    Write-Host -Object "Connecting to host $esx"
     $thisHost = Connect-VIServer $esx -User  $root -Password $Passwd
     $ESXiVersion = $thisHost.Version -replace "\.", ""
     Write-Host -Object "starting ssh services on $esx"
@@ -68,7 +70,9 @@ foreach ($esx in $esxlist){
     if($ESXiVersion -eq 670){
         Invoke-Expression -command "$plink -ssh $root@$esx -pw $Passwd vim-cmd hostsvc/advopt/update UserVars.ESXiVPsDisabledProtocols string $TLSDisable"
     }
-    Get-VMHostService | where {$psitem.key -eq "tsm-ssh"} | Stop-VMHostService -Confirm:$false
+    Write-Host -Object "stopping ssh services on $esx"
+    #Get-VMHostService | where {$psitem.key -eq "tsm-ssh"} | Stop-VMHostService -Confirm:$false
+    Write-Host -Object "Disconnecting from host $esx"
     Disconnect-VIServer $esx -Confirm:$false
 }
 
